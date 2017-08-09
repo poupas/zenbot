@@ -332,6 +332,11 @@ var withData = function (data, trades) {
               else return y(d.price);
           });
 
+
+  var sma0 = techan.plot.sma()
+    .xScale(x)
+    .yScale(y);
+
   var ema2 = techan.plot.ema()
     .xScale(x)
     .yScale(y);
@@ -435,6 +440,10 @@ var withData = function (data, trades) {
           .attr("clip-path", "url(#ohlcClip)");
 
   ohlcSelection.append("g")
+          .attr("class", "indicator ema ma-0")
+          .attr("clip-path", "url(#ohlcClip)");
+
+  ohlcSelection.append("g")
           .attr("class", "indicator ema ma-2")
           .attr("clip-path", "url(#ohlcClip)");
 
@@ -477,7 +486,9 @@ var withData = function (data, trades) {
     return
   }
   svg.select("g.volume").datum(data)
+  svg.select("g.ema.ma-0").datum(techan.indicator.sma().period({{trend_sma_period}})(data)).call(sma0);
   svg.select("g.ema.ma-2").datum(techan.indicator.ema().period({{trend_ema_period}})(data)).call(ema2);
+
   svg.select("g.tradearrow").datum(trades).call(tradearrow);
 
   // Stash for zooming
@@ -496,6 +507,7 @@ var withData = function (data, trades) {
     svg.select("g.volume").call(volume);
     svg.select("g.crosshair.ohlc").call(ohlcCrosshair).call(zoom);
     svg.select("g.tradearrow").call(tradearrow);
+    svg.select("g .ema.ma-0").call(sma0.refresh).call(zoom);
     svg.select("g .ema.ma-2").call(ema2.refresh).call(zoom);
   }
 

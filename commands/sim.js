@@ -159,7 +159,8 @@ module.exports = function container (get, set, clear) {
           var tpl = fs.readFileSync(path.resolve(__dirname, '..', 'templates', 'sim_result.html.tpl'), {encoding: 'utf8'})
           var out = tpl
             .replace('{{code}}', code)
-            .replace('{{trend_ema_period}}', so.trend_ema || 36)
+            .replace('{{trend_ema_period}}', so.trend_ema || 13)
+            .replace('{{trend_sma_period}}', so.trend_ema || 30)
             .replace('{{output}}', html_output)
             .replace(/\{\{symbol\}\}/g,  so.selector + ' - zenbot ' + require('../package.json').version)
 
